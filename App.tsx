@@ -15,14 +15,26 @@ const ParticleBackground = React.lazy(() => import('./components/ParticleBackgro
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Simulate asset loading
+    // Detect mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    // Reduce loading time on mobile for better UX
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
+    }, isMobile ? 1500 : 2500);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, [isMobile]);
 
   return (
     <>

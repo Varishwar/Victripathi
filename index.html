@@ -104,6 +104,33 @@
                      0 0 20px rgba(56, 189, 248, 0.3),
                      0 0 30px rgba(56, 189, 248, 0.2);
       }
+      
+      /* Mobile optimization - reduce animations on small screens */
+      @media (max-width: 768px) {
+        .animate-pulse {
+          animation-duration: 4s !important;
+        }
+        .animate-float {
+          animation-duration: 8s !important;
+        }
+        /* Reduce blur for better mobile performance */
+        .blur-3xl {
+          filter: blur(40px) !important;
+        }
+      }
+      
+      /* Improve mobile touch interactions */
+      @media (hover: none) and (pointer: coarse) {
+        * {
+          -webkit-tap-highlight-color: rgba(56, 189, 248, 0.2);
+        }
+      }
+      
+      /* Prevent mobile scroll issues */
+      body {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: none;
+      }
     </style>
   <script type="importmap">
 {

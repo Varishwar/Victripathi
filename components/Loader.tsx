@@ -8,14 +8,24 @@ const Loader: React.FC = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
       className="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center text-azure-400"
+      style={{ WebkitBackfaceVisibility: 'hidden', backfaceVisibility: 'hidden' }}
     >
       <div className="relative w-24 h-24 mb-8">
         {/* Animated Initials VT */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center text-4xl font-mono font-bold border border-azure-500/30"
+          className="absolute inset-0 flex items-center justify-center text-4xl font-mono font-bold border-2 border-azure-500/30 rounded-lg"
           initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+          animate={{ 
+            scale: [0.8, 1, 0.8], 
+            opacity: [0, 1, 0.7] 
+          }}
+          transition={{ 
+            duration: 2, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            repeatType: "loop" 
+          }}
+          style={{ willChange: 'transform, opacity' }}
         >
           VT
         </motion.div>
@@ -23,14 +33,21 @@ const Loader: React.FC = () => {
         {/* Scanning line */}
         <motion.div 
             className="absolute top-0 left-0 w-full h-1 bg-azure-400 shadow-[0_0_15px_rgba(56,189,248,0.8)]"
-            animate={{ top: ["0%", "100%", "0%"] }}
-            transition={{ duration: 2, ease: "linear", repeat: Infinity }}
+            animate={{ top: ["0%", "100%"] }}
+            transition={{ 
+              duration: 1.5, 
+              ease: "linear", 
+              repeat: Infinity,
+              repeatType: "loop"
+            }}
+            style={{ willChange: 'top' }}
         />
       </div>
 
       <motion.p
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: [0, 1, 0.7, 1] }}
+        transition={{ duration: 1, repeat: Infinity, repeatType: "loop" }}
         className="font-mono text-sm tracking-widest text-azure-200"
       >
         INITIALIZING AZURE ENVIRONMENT...
