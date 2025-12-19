@@ -4,7 +4,6 @@ import { RESUME_DATA } from './constants';
 import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
-import OpenToWorkBadge from './components/OpenToWorkBadge';
 import SectionDivider from './components/SectionDivider';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -45,7 +44,6 @@ const App: React.FC = () => {
     <>
       <CustomCursor />
       <ScrollProgress />
-      <OpenToWorkBadge />
       
       <AnimatePresence mode="wait">
         {loading && <Loader key="loader" />}
