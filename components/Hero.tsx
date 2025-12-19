@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Mail, MapPin, Linkedin, Server, Database, Shield, Smartphone, Download } from 'lucide-react';
+import NetworkGraph from './NetworkGraph';
+import React from 'react';
 import { ProfileData } from '../types';
 
 interface HeroProps {
@@ -203,59 +205,17 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
               />
            </motion.div>
 
-           {/* Connecting Network Lines */}
-           <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
-             <motion.line 
-               x1="50%" y1="50%" x2="85%" y2="20%"
-               stroke="url(#gradient1)" strokeWidth="2" strokeDasharray="5,5"
-               initial={{ pathLength: 0 }}
-               animate={{ pathLength: [0, 1, 0] }}
-               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-             />
-             <motion.line 
-               x1="50%" y1="50%" x2="15%" y2="25%"
-               stroke="url(#gradient2)" strokeWidth="2" strokeDasharray="5,5"
-               initial={{ pathLength: 0 }}
-               animate={{ pathLength: [0, 1, 0] }}
-               transition={{ duration: 3.5, repeat: Infinity, ease: "linear", delay: 0.5 }}
-             />
-             <motion.line 
-               x1="50%" y1="50%" x2="10%" y2="70%"
-               stroke="url(#gradient3)" strokeWidth="2" strokeDasharray="5,5"
-               initial={{ pathLength: 0 }}
-               animate={{ pathLength: [0, 1, 0] }}
-               transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: 1 }}
-             />
-             <motion.line 
-               x1="50%" y1="50%" x2="88%" y2="75%"
-               stroke="url(#gradient4)" strokeWidth="2" strokeDasharray="5,5"
-               initial={{ pathLength: 0 }}
-               animate={{ pathLength: [0, 1, 0] }}
-               transition={{ duration: 3.2, repeat: Infinity, ease: "linear", delay: 1.5 }}
-             />
-             <defs>
-               <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
-                 <stop offset="0%" stopColor="rgba(56,189,248,0)" />
-                 <stop offset="50%" stopColor="rgba(56,189,248,0.6)" />
-                 <stop offset="100%" stopColor="rgba(56,189,248,0)" />
-               </linearGradient>
-               <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
-                 <stop offset="0%" stopColor="rgba(168,85,247,0)" />
-                 <stop offset="50%" stopColor="rgba(168,85,247,0.6)" />
-                 <stop offset="100%" stopColor="rgba(168,85,247,0)" />
-               </linearGradient>
-               <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="0%">
-                 <stop offset="0%" stopColor="rgba(20,184,166,0)" />
-                 <stop offset="50%" stopColor="rgba(20,184,166,0.6)" />
-                 <stop offset="100%" stopColor="rgba(20,184,166,0)" />
-               </linearGradient>
-               <linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="0%">
-                 <stop offset="0%" stopColor="rgba(236,72,153,0)" />
-                 <stop offset="50%" stopColor="rgba(236,72,153,0.6)" />
-                 <stop offset="100%" stopColor="rgba(236,72,153,0)" />
-               </linearGradient>
-             </defs>
-           </svg>
+           {/* Replaced static SVG lines with interactive 3D network graph */}
+           <div className="absolute inset-0 w-full h-full pointer-events-none z-10">
+             <div style={{ width: '100%', height: '100%' }}>
+               <div style={{ width: '100%', height: '100%' }}>
+                 {/* Lazy load the network graph canvas */}
+                 <React.Suspense fallback={null}>
+                   <NetworkGraph />
+                 </React.Suspense>
+               </div>
+             </div>
+           </div>
 
            {/* 1. AVD/Virtual Desktop (Top Right) */}
            <motion.div 
