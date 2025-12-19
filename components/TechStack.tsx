@@ -8,9 +8,9 @@ const TechStack: React.FC = () => {
     { name: 'PowerShell', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powershell/powershell-original.svg', color: '#5391FE' },
     { name: 'Azure DevOps', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuredevops/azuredevops-original.svg', color: '#0078D7' },
     { name: 'Git', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', color: '#F05032' },
-    { name: 'Microsoft 365', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Microsoft_365_%282022%29.svg', color: '#D83B01' },
-    { name: 'Azure AD', logo: 'https://www.svgrepo.com/show/353464/azure.svg', color: '#00A4EF' },
-    { name: 'Intune', logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d8/Microsoft_Intune_logo.svg', color: '#0078D4' },
+    { name: 'Microsoft 365', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/microsoftsqlserver/microsoftsqlserver-plain.svg', color: '#D83B01' },
+    { name: 'Azure AD', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg', color: '#00A4EF' },
+    { name: 'Intune', logo: 'https://www.cdnlogo.com/logos/m/91/microsoft-intune.svg', color: '#0078D4' },
     { name: 'Windows', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg', color: '#0078D6' },
     { name: 'GitHub', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', color: '#181717' },
     { name: 'VS Code', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg', color: '#007ACC' },
@@ -43,11 +43,16 @@ const TechStack: React.FC = () => {
                 y: -10,
                 rotate: [0, -5, 5, 0]
               }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 20
+              }}
               className="relative group cursor-pointer"
             >
               {/* Glow effect */}
               <div 
-                className="absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-all duration-500"
+                className="absolute inset-0 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"
                 style={{ backgroundColor: tech.color }}
               />
               
@@ -56,9 +61,19 @@ const TechStack: React.FC = () => {
                 <img 
                   src={tech.logo} 
                   alt={tech.name}
-                  className="w-12 h-12 object-contain group-hover:scale-110 transition-transform duration-300"
+                  className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-110"
+                  loading="lazy"
                   onError={(e) => {
-                    e.currentTarget.style.display = 'none';
+                    const target = e.currentTarget;
+                    // Fallback to a placeholder or tech name if image fails
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent && !parent.querySelector('.fallback-text')) {
+                      const fallback = document.createElement('div');
+                      fallback.className = 'fallback-text text-azure-400 text-2xl font-bold';
+                      fallback.textContent = tech.name.substring(0, 2).toUpperCase();
+                      parent.insertBefore(fallback, target);
+                    }
                   }}
                 />
                 <span className="text-slate-300 text-xs font-medium text-center group-hover:text-white transition-colors">
