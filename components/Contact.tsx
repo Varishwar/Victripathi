@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Linkedin, ArrowRight } from 'lucide-react';
+import { Mail, Linkedin, ArrowRight, Download } from 'lucide-react';
 import { ProfileData } from '../types';
 
 interface ContactProps {
@@ -59,6 +59,18 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform opacity-0 group-hover:opacity-100" />
               </a>
             )}
+            
+            {/* Resume Download Button */}
+            <a 
+              href="https://drive.google.com/uc?export=download&id=1XRdV7Mo7YSc3Cu7NxoRVu-v5vBHzEcqa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group w-full md:w-auto flex items-center justify-center space-x-3 px-8 py-4 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white border border-teal-500/30 hover:border-teal-400/60 rounded-xl transition-all duration-500 shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_35px_rgba(20,184,166,0.5)] hover:scale-105"
+            >
+              <Download className="w-5 h-5" />
+              <span className="font-semibold text-lg">Download Resume</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform opacity-0 group-hover:opacity-100" />
+            </a>
         </motion.div>
 
         <motion.div 

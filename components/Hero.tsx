@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Mail, MapPin, Linkedin, Server, Database, Shield, Smartphone } from 'lucide-react';
+import { ArrowDown, Mail, MapPin, Linkedin, Server, Database, Shield, Smartphone, Download } from 'lucide-react';
 import { ProfileData } from '../types';
 
 interface HeroProps {
@@ -66,6 +66,24 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
                     <span>LinkedIn Profile</span>
                  </a>
              )}
+          </motion.div>
+          
+          {/* Resume Download Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1 }}
+            className="pt-6"
+          >
+            <a 
+              href="https://drive.google.com/uc?export=download&id=1XRdV7Mo7YSc3Cu7NxoRVu-v5vBHzEcqa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_30px_rgba(20,184,166,0.5)] hover:scale-105"
+            >
+              <Download className="w-5 h-5" />
+              <span className="font-semibold">Download Resume</span>
+            </a>
           </motion.div>
         </div>
 
