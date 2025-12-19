@@ -20,23 +20,26 @@ const SimpleParticles = () => {
   const uniforms = useRef({
     uTime: { value: 0 },
     uMouse: { value: new THREE.Vector3(1000, 1000, 0) }, // Start off-screen
-    uColor: { value: new THREE.Color('#38bdf8') } // Azure Blue
+    uColor1: { value: new THREE.Color('#38bdf8') }, // Azure
+    uColor2: { value: new THREE.Color('#7c3aed') }  // Purple accent
   });
 
-  const count = 2500; // Number of particles
+  const count = 1200; // Reduced particle count for performance and clarity
   
   const { positions, scales, randoms } = useMemo(() => {
     const positions = new Float32Array(count * 3);
     const scales = new Float32Array(count);
-    const randoms = new Float32Array(count * 3); // Random values for drift
+    const randoms = new Float32Array(count * 3); // Random values for drift/mix
     
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 60;     // x spread
       positions[i * 3 + 1] = (Math.random() - 0.5) * 40; // y spread
       positions[i * 3 + 2] = (Math.random() - 0.5) * 20; // z depth
       
-      scales[i] = Math.random();
-      
+      // Bias scales toward smaller sizes while keeping some larger
+      scales[i] = 0.4 + Math.pow(Math.random(), 2) * 1.2;
+
+      // randoms: x = color mix, y = twinkle offset, z = drift seed
       randoms[i * 3] = Math.random();
       randoms[i * 3 + 1] = Math.random();
       randoms[i * 3 + 2] = Math.random();
@@ -47,14 +50,13 @@ const SimpleParticles = () => {
   useFrame((state) => {
     const { clock, pointer, viewport } = state;
     uniforms.current.uTime.value = clock.getElapsedTime();
-    
+
     // Map normalized pointer coordinates (-1 to 1) to world coordinates at z=0
-    // This ensures the repulsion matches the cursor position visually
     const x = (pointer.x * viewport.width) / 2;
     const y = (pointer.y * viewport.height) / 2;
-    
+
     // Smoothly interpolate mouse position for fluid effect
-    uniforms.current.uMouse.value.lerp(new THREE.Vector3(x, y, 0), 0.1);
+    uniforms.current.uMouse.value.lerp(new THREE.Vector3(x, y, 0), 0.08);
   });
 
   return (
@@ -90,59 +92,66 @@ const SimpleParticles = () => {
           attribute float aScale;
           attribute vec3 aRandom;
           varying float vAlpha;
-          
+          varying float vMix;
+          varying float vTwinkle;
+
           void main() {
             vec3 pos = position;
-            
-            // 1. Natural Drift
-            // Use random attributes to make each particle drift differently
-            float time = uTime * 0.3;
-            pos.x += sin(time * aRandom.x + pos.y * 0.05) * 0.5;
-            pos.y += cos(time * aRandom.y + pos.x * 0.05) * 0.5;
-            pos.z += sin(time * aRandom.z) * 0.5;
 
-            // 2. Mouse Interaction
-            // Calculate distance in XY plane (ignoring Z for interaction feel)
+            // Gentle global rotation for parallax feel
+            float rot = uTime * 0.02;
+            float c = cos(rot);
+            float s = sin(rot);
+            mat2 R = mat2(c, -s, s, c);
+            pos.xy = R * pos.xy;
+
+            // Natural drift
+            float time = uTime * 0.25;
+            pos.x += sin(time * aRandom.x + pos.y * 0.03) * 0.6;
+            pos.y += cos(time * aRandom.y + pos.x * 0.03) * 0.6;
+            pos.z += sin(time * aRandom.z * 0.5) * 0.4;
+
+            // Mouse Interaction
             float dist = distance(pos.xy, uMouse.xy);
-            float radius = 5.0; // Interaction radius
+            float radius = 6.0;
             float force = 0.0;
-            
             if (dist < radius) {
                force = (radius - dist) / radius;
-               // Push particles away from cursor
                vec3 dir = normalize(pos - uMouse);
-               // Add a little Z push for 3D feel
-               pos += dir * force * 3.0; 
-               pos.z += force * 2.0;
+               pos += dir * force * 3.2;
+               pos.z += force * 2.2;
             }
 
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
-            
-            // Size attenuation: larger when closer to camera
-            gl_PointSize = aScale * 35.0 * (1.0 / -mvPosition.z);
-            
-            // Opacity logic:
-            // Base opacity + brighten when interacted with
-            vAlpha = 0.4 + force * 0.6;
+
+            gl_PointSize = aScale * 28.0 * (1.0 / -mvPosition.z);
+
+            // Mix factor for color interpolation
+            vMix = aRandom.x;
+
+            // Subtle twinkle per particle
+            vTwinkle = 0.6 + 0.4 * sin(uTime * 3.0 + aRandom.y * 12.0);
+
+            vAlpha = (0.35 + force * 0.65) * vTwinkle;
           }
         `}
         fragmentShader={`
-          uniform vec3 uColor;
+          uniform vec3 uColor1;
+          uniform vec3 uColor2;
           varying float vAlpha;
-          
+          varying float vMix;
+          varying float vTwinkle;
+
           void main() {
-            // Create a soft circular glow
             float r = length(gl_PointCoord - vec2(0.5));
-            
-            // Discard pixels outside circle
             if (r > 0.5) discard;
-            
-            // Radial gradient for soft edge
+
             float glow = 1.0 - (r * 2.0);
-            glow = pow(glow, 2.0); // Sharpen the falloff slightly
-            
-            gl_FragColor = vec4(uColor, glow * vAlpha);
+            glow = pow(glow, 2.0);
+
+            vec3 color = mix(uColor1, uColor2, vMix);
+            gl_FragColor = vec4(color, glow * vAlpha);
           }
         `}
       />

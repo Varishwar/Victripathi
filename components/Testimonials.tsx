@@ -36,7 +36,7 @@ const Testimonials: React.FC = () => {
       role: "Infrastructure Manager",
       company: "Healthcare Organization",
       avatar: "https://ui-avatars.com/api/?name=David+Chen&background=8B5CF6&color=fff&size=128",
-      content: "Outstanding security implementation! Varishwar helped us achieve ISO 27001 certification with Microsoft Sentinel and Zero Trust architecture. His attention to detail is remarkable.",
+      content: "Outstanding security implementation! Varishwar implemented Microsoft Sentinel and Zero Trust architecture. His attention to detail is remarkable.",
       rating: 5
     }
   ];

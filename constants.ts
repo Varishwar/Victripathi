@@ -26,7 +26,7 @@ export const RESUME_DATA: ProfileData = {
     },
     {
       category: "Security & Compliance",
-      skills: ["Zero Trust Architecture", "Microsoft Sentinel (SIEM)", "Defender for Cloud", "Azure Key Vault", "Conditional Access", "PIM", "ISO 27001", "Cyber Essentials"]
+      skills: ["Zero Trust Architecture", "Microsoft Sentinel (SIEM)", "Defender for Cloud", "Azure Key Vault", "Conditional Access", "PIM", "Cyber Essentials"]
     },
     {
       category: "Identity & Access Management",
@@ -125,9 +125,9 @@ export const RESUME_DATA: ProfileData = {
     {
       title: "Security & Compliance Overhaul",
       client: "Healthcare Organization",
-      scope: "Implemented Microsoft Sentinel SIEM, Azure Security Center, and achieved ISO 27001 and Cyber Essentials Plus certification.",
+      scope: "Implemented Microsoft Sentinel SIEM and Azure Security Center, plus Cyber Essentials Plus compliance work.",
       technologies: ["Sentinel", "Defender for Cloud", "Key Vault", "Conditional Access", "PIM", "Compliance Manager"],
-      metrics: ["ISO 27001 Certified", "100% Compliance", "Threat Detection", "24/7 Monitoring"],
+      metrics: ["100% Compliance", "Threat Detection", "24/7 Monitoring"],
       icon: "Shield"
     }
   ],
