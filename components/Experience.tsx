@@ -33,35 +33,38 @@ const Experience: React.FC<ExperienceProps> = ({ jobs }) => {
               transition={{ delay: idx * 0.1 }}
               className="relative pl-8 md:pl-12 group"
             >
-              {/* Timeline Dot */}
-              <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-900 border-2 border-azure-500 shadow-[0_0_10px_rgba(56,189,248,0.5)] group-hover:scale-125 transition-transform duration-300"></div>
+              {/* Timeline Dot with pulse */}
+              <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-gradient-to-r from-azure-500 to-teal-500 shadow-[0_0_15px_rgba(56,189,248,0.6)] group-hover:scale-150 group-hover:shadow-[0_0_25px_rgba(56,189,248,0.8)] transition-all duration-300 animate-glow-pulse"></div>
 
               <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-2">
                 <div>
-                  <h3 className="text-xl font-bold text-white flex items-center gap-2 group-hover:text-azure-300 transition-colors">
+                  <h3 className="text-xl font-bold text-white flex items-center gap-2 group-hover:text-azure-300 transition-colors group-hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.5)]">
                     {job.role}
                   </h3>
-                  <div className="text-azure-400 font-medium flex items-center gap-2 mt-1">
-                    <Briefcase size={14} />
+                  <div className="text-azure-400 font-medium flex items-center gap-2 mt-1 group-hover:text-azure-300 transition-colors">
+                    <Briefcase size={14} className="group-hover:scale-110 transition-transform" />
                     {job.company}
                   </div>
                 </div>
-                <div className="flex items-center text-slate-500 text-sm mt-2 md:mt-0 font-mono">
+                <div className="flex items-center text-slate-500 text-sm mt-2 md:mt-0 font-mono group-hover:text-slate-400 transition-colors">
                   <Calendar size={14} className="mr-2" />
                   {job.period}
                 </div>
               </div>
 
-              <div className="mt-4 bg-slate-900/30 backdrop-blur-sm p-6 rounded-lg border border-slate-800 hover:bg-slate-800/50 hover:border-azure-500/30 transition-all duration-300">
+              <motion.div 
+                whileHover={{ scale: 1.02, rotateX: 2, z: 20 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="mt-4 bg-gradient-to-br from-slate-900/40 via-slate-900/30 to-slate-900/20 backdrop-blur-sm p-6 rounded-lg border border-slate-800 hover:border-azure-500/50 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(56,189,248,0.2)] preserve-3d shimmer">
                 <ul className="space-y-2">
                   {job.details.map((detail, dIdx) => (
-                    <li key={dIdx} className="text-slate-300 text-sm leading-relaxed flex items-start">
-                      <span className="mr-2 text-azure-500 mt-1.5">•</span>
+                    <li key={dIdx} className="text-slate-300 text-sm leading-relaxed flex items-start group/item hover:text-slate-200 transition-colors">
+                      <span className="mr-2 text-azure-500 mt-1.5 group-hover/item:text-azure-400 group-hover/item:scale-125 inline-block transition-all">•</span>
                       <span>{detail}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
