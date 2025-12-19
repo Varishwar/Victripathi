@@ -9,6 +9,7 @@ import FloatingCTA from './components/FloatingCTA';
 import LiveStats from './components/LiveStats';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import PerformanceBadges from './components/PerformanceBadges';
 import ImpactMetrics from './components/ImpactMetrics';
 import TechStack from './components/TechStack';
 import Skills from './components/Skills';
@@ -49,6 +50,7 @@ const App: React.FC = () => {
     <>
       <CustomCursor />
       <ScrollProgress />
+      <PerformanceBadges />
       <FloatingCTA />
       <LiveStats />
       
