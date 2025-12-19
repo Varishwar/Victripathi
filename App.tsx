@@ -14,6 +14,8 @@ import TechStack from './components/TechStack';
 import Skills from './components/Skills';
 import KeyProjects from './components/KeyProjects';
 import Experience from './components/Experience';
+import Testimonials from './components/Testimonials';
+import SkillsRadar from './components/SkillsRadar';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
 
@@ -78,7 +80,20 @@ const App: React.FC = () => {
             {RESUME_DATA.keyProjects && <KeyProjects projects={RESUME_DATA.keyProjects} />}
             <SectionDivider gradient="from-cyan-500 via-blue-500 to-indigo-500" />
             <Experience jobs={RESUME_DATA.experience} />
+            <SectionDivider gradient="from-purple-500 via-fuchsia-500 to-pink-500" />
+            <Testimonials />
             <SectionDivider gradient="from-orange-500 via-amber-500 to-yellow-500" />
+            <SkillsRadar skills={[
+              { name: 'Azure AVD', level: 95 },
+              { name: 'Terraform', level: 90 },
+              { name: 'Azure Networking', level: 92 },
+              { name: 'Security & Compliance', level: 88 },
+              { name: 'Intune/MDM', level: 90 },
+              { name: 'PowerShell', level: 93 },
+              { name: 'Azure DevOps', level: 85 },
+              { name: 'Hybrid Identity', level: 91 }
+            ]} />
+            <SectionDivider gradient="from-teal-500 via-cyan-500 to-sky-500" />
             <Certifications certs={RESUME_DATA.certifications} />
             <SectionDivider />
             <Contact contact={RESUME_DATA.contact} />
