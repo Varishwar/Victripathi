@@ -3,6 +3,9 @@ import { AnimatePresence } from 'framer-motion';
 import { RESUME_DATA } from './constants';
 import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
+import ScrollProgress from './components/ScrollProgress';
+import OpenToWorkBadge from './components/OpenToWorkBadge';
+import SectionDivider from './components/SectionDivider';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import ImpactMetrics from './components/ImpactMetrics';
@@ -41,6 +44,8 @@ const App: React.FC = () => {
   return (
     <>
       <CustomCursor />
+      <ScrollProgress />
+      <OpenToWorkBadge />
       
       <AnimatePresence mode="wait">
         {loading && <Loader key="loader" />}
@@ -60,11 +65,17 @@ const App: React.FC = () => {
 
             {/* Content Sections */}
             <Hero data={RESUME_DATA} />
+            <SectionDivider />
             {RESUME_DATA.impactMetrics && <ImpactMetrics metrics={RESUME_DATA.impactMetrics} />}
+            <SectionDivider gradient="from-teal-500 via-emerald-500 to-green-500" />
             <Skills skills={RESUME_DATA.skills} />
+            <SectionDivider gradient="from-purple-500 via-pink-500 to-rose-500" />
             {RESUME_DATA.keyProjects && <KeyProjects projects={RESUME_DATA.keyProjects} />}
+            <SectionDivider gradient="from-cyan-500 via-blue-500 to-indigo-500" />
             <Experience jobs={RESUME_DATA.experience} />
+            <SectionDivider gradient="from-orange-500 via-amber-500 to-yellow-500" />
             <Certifications certs={RESUME_DATA.certifications} />
+            <SectionDivider />
             <Contact contact={RESUME_DATA.contact} />
 
             {/* Footer */}

@@ -26,15 +26,25 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <span className="inline-block px-3 py-1 mb-4 text-xs font-mono font-semibold tracking-wider text-azure-950 bg-azure-400 rounded-full shadow-[0_0_15px_rgba(56,189,248,0.4)]">
+            <span className="inline-block px-3 py-1 mb-4 text-xs font-mono font-semibold tracking-wider text-azure-950 bg-azure-400 rounded-full shadow-[0_0_15px_rgba(56,189,248,0.4)] animate-bounce-slow">
               AZURE INFRASTRUCTURE LEAD
             </span>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-2 drop-shadow-2xl">
-              Varishwar <span className="text-transparent bg-clip-text bg-gradient-to-r from-azure-400 via-teal-400 to-cyan-400 animate-gradient-x bg-[length:200%_200%]">Tripathi</span>
+              Varishwar <span className="text-transparent bg-clip-text bg-gradient-to-r from-azure-400 via-teal-400 to-cyan-400 animate-gradient-x bg-[length:200%_200%] drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]">Tripathi</span>
             </h1>
-            <h2 className="text-xl md:text-2xl text-slate-400 font-light font-mono">
+            <motion.h2 
+              className="text-xl md:text-2xl text-slate-400 font-light font-mono"
+              animate={{
+                opacity: [0.7, 1, 0.7]
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
               {data.title}
-            </h2>
+            </motion.h2>
           </motion.div>
 
           <motion.p
@@ -75,15 +85,30 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
             transition={{ delay: 1.1 }}
             className="pt-6"
           >
-            <a 
+            <motion.a 
               href="https://drive.google.com/uc?export=download&id=1XRdV7Mo7YSc3Cu7NxoRVu-v5vBHzEcqa"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(20,184,166,0.3)] hover:shadow-[0_0_30px_rgba(20,184,166,0.5)] hover:scale-105"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="group inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-500 hover:to-cyan-500 text-white rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(20,184,166,0.4)] hover:shadow-[0_0_40px_rgba(20,184,166,0.6)] relative overflow-hidden"
             >
-              <Download className="w-5 h-5" />
-              <span className="font-semibold">Download Resume</span>
-            </a>
+              {/* Shimmer effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                animate={{
+                  x: ['-200%', '200%']
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "linear",
+                  repeatDelay: 1
+                }}
+              />
+              <Download className="w-5 h-5 relative z-10 group-hover:animate-bounce" />
+              <span className="font-semibold text-lg relative z-10">Download Resume</span>
+            </motion.a>
           </motion.div>
         </div>
 

@@ -154,6 +154,55 @@
         }
       }
       
+      /* Magnetic button effect */
+      .magnetic-button {
+        transition: transform 0.1s ease;
+      }
+      
+      /* Page load animation */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out;
+      }
+      
+      /* Gradient text animation */
+      @keyframes gradient-shift {
+        0%, 100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      
+      .animate-gradient-text {
+        background: linear-gradient(90deg, #38bdf8, #14b8a6, #22d3ee, #38bdf8);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradient-shift 3s ease infinite;
+      }
+      
+      /* Mobile optimizations */
+      @media (max-width: 768px) {
+        .animate-float {
+          animation-duration: 4s;
+        }
+        .animate-glow-pulse {
+          animation: none;
+        }
+      }
+      
       /* Glow effects */
       .glow-azure {
         text-shadow: 0 0 10px rgba(56, 189, 248, 0.5),
