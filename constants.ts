@@ -3,8 +3,8 @@ import { ProfileData } from './types';
 // This data simulates the output of the CLI extraction tool based on the provided PDF
 export const RESUME_DATA: ProfileData = {
   name: "Varishwar Tripathi",
-  title: "Azure Infrastructure Project Engineer / AVD Specialist",
-  summary: "Azure Infrastructure Project Engineer & AVD Specialist with over 10 years of MSP experience, delivering comprehensive cloud and infrastructure solutions for UK enterprise clients. Highly skilled in architecting and deploying Azure Virtual Desktop (AVD), Hybrid Identity, Intune MDM/MAM, Azure Networking, and Microsoft 365 E5 security frameworks. Certified in AZ-104, AZ-305, AZ-700, and AZ-140.",
+  title: "Azure Infrastructure Engineer | Cloud Solutions Architect & AVD Specialist",
+  summary: "Azure Infrastructure Engineer | Cloud Solutions Architect & AVD Specialist with over 10 years of MSP experience, delivering comprehensive cloud and infrastructure solutions for UK enterprise clients. Highly skilled in architecting and deploying Azure Virtual Desktop (AVD), Hybrid Identity, Intune MDM/MAM, Azure Networking, and Microsoft 365 E5 security frameworks. Certified in AZ-104, AZ-305, AZ-700, and AZ-140.",
   contact: {
     email: "Varishwartripathi@gmail.com",
     phone: "+91 7574080069",

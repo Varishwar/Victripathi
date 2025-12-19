@@ -26,8 +26,8 @@ if (LINKEDIN_URL) console.log(`Processing LinkedIn: ${LINKEDIN_URL}`);
 // In a real scenario, this would await pdfParse(dataBuffer)
 const extractedData = {
   name: "Varishwar Tripathi",
-  title: "Azure Infrastructure Project Engineer / AVD Specialist",
-  summary: "Azure Infrastructure Project Engineer & AVD Specialist with over 10 years of MSP experience...",
+  title: "Azure Infrastructure Engineer | Cloud Solutions Architect & AVD Specialist",
+  summary: "Azure Infrastructure Engineer | Cloud Solutions Architect & AVD Specialist with over 10 years of MSP experience...",
   contact: {
     email: "Varishwartripathi@gmail.com",
     phone: "+91 7574080069",
