@@ -286,25 +286,7 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
                       <div className="text-slate-400 text-[10px]">IaC Expert</div>
                     </div>
                  </div>
-                 {/* Code Flow Animation */}
-                 {[...Array(3)].map((_, i) => (
-                   <motion.div
-                     key={i}
-                     className="absolute top-1/2 left-1/2 w-1 h-1 bg-teal-400 rounded-full"
-                     animate={{
-                       x: [0, -30, 0],
-                       y: [0, -20, 0],
-                       opacity: [0, 1, 0],
-                       scale: [0, 1, 0]
-                     }}
-                     transition={{
-                       duration: 2,
-                       repeat: Infinity,
-                       delay: i * 0.6,
-                       ease: "easeOut"
-                     }}
-                   />
-                 ))}
+                 {/* Code flow micro-dots removed for clarity */}
               </div>
            </motion.div>
 

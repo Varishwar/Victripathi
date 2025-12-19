@@ -127,13 +127,13 @@ const FlowParticle: React.FC<{ a: THREE.Vector3; b: THREE.Vector3; speed: number
     const z = THREE.MathUtils.lerp(a.z, b.z, t);
     if (ref.current) {
       ref.current.position.set(x, y, z);
-      ref.current.rotation.y += dt * 2;
+      ref.current.rotation.y += dt * 1.0;
     }
   });
   return (
     <mesh ref={ref}>
-      <sphereGeometry args={[0.12, 8, 8]} />
-      <meshBasicMaterial color="#7c3aed" transparent opacity={0.95} />
+      <sphereGeometry args={[0.08, 8, 8]} />
+      <meshBasicMaterial color="#7c3aed" transparent opacity={0.6} />
     </mesh>
   );
 };
