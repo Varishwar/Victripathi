@@ -37,7 +37,7 @@ const FloatingCTA: React.FC<FloatingCTAProps> = ({ onClose }) => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 100, scale: 0.8 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 hidden md:block"
+          className="fixed bottom-24 right-8 z-50 hidden md:block max-w-md"
         >
           <div className="relative group">
             {/* Animated glow */}
@@ -54,32 +54,34 @@ const FloatingCTA: React.FC<FloatingCTAProps> = ({ onClose }) => {
               }}
             />
             
-            {/* CTA Card */}
-            <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-800/95 backdrop-blur-md border border-azure-500/40 rounded-2xl px-8 py-5 shadow-[0_0_40px_rgba(56,189,248,0.3)] flex items-center gap-6">
-              <div>
-                <h3 className="text-white font-bold text-lg mb-1">
-                  Impressed by what you see?
-                </h3>
-                <p className="text-slate-400 text-sm">
-                  Let's discuss how I can help transform your Azure infrastructure
-                </p>
+            {/* CTA Card - More compact */}
+            <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-800/95 backdrop-blur-md border border-azure-500/40 rounded-2xl px-6 py-4 shadow-[0_0_40px_rgba(56,189,248,0.3)]">
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <h3 className="text-white font-bold text-base mb-1">
+                    Impressed by what you see?
+                  </h3>
+                  <p className="text-slate-400 text-xs">
+                    Let's discuss your Azure infrastructure
+                  </p>
+                </div>
+                
+                <motion.a
+                  href="#contact"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-azure-500 to-teal-500 text-white px-5 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] transition-all"
+                  onClick={handleClose}
+                >
+                  Get In Touch
+                </motion.a>
               </div>
-              
-              <motion.a
-                href="#contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-azure-500 to-teal-500 text-white px-6 py-3 rounded-xl font-semibold whitespace-nowrap shadow-[0_0_20px_rgba(56,189,248,0.4)] hover:shadow-[0_0_30px_rgba(56,189,248,0.6)] transition-all"
-                onClick={handleClose}
-              >
-                Get In Touch
-              </motion.a>
               
               <button
                 onClick={handleClose}
-                className="absolute -top-3 -right-3 w-8 h-8 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition-all group/btn"
+                className="absolute -top-2 -right-2 w-6 h-6 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center text-slate-400 hover:text-white transition-all group/btn"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3 h-3" />
               </button>
             </div>
           </div>
