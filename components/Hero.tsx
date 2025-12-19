@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Mail, MapPin, Linkedin, Server, Database, Shield, Smartphone, Download } from 'lucide-react';
 import { ProfileData } from '../types';
@@ -8,6 +8,49 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ data }) => {
+  const prefersReduced = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const Typing: React.FC<{ text: string; speed?: number }> = ({ text, speed = 40 }) => {
+    const [typed, setTyped] = useState('');
+    useEffect(() => {
+      if (prefersReduced) { setTyped(text); return; }
+      let i = 0;
+      let mounted = true;
+      const tick = () => {
+        if (!mounted) return;
+        setTyped(text.slice(0, ++i));
+        if (i < text.length) setTimeout(tick, speed + Math.random() * 40);
+      };
+      const start = setTimeout(tick, 400);
+      return () => { mounted = false; clearTimeout(start); };
+    }, [text, speed]);
+    return <span className="font-mono text-lg md:text-xl text-azure-200">{typed}</span>;
+  };
+
+  const CountUp: React.FC<{ value: string; duration?: number }> = ({ value, duration = 1200 }) => {
+    const [display, setDisplay] = useState(value);
+    const raf = useRef<number | null>(null);
+
+    useEffect(() => {
+      if (prefersReduced) { setDisplay(value); return; }
+      const match = value.match(/(\d+[\d,]*)/);
+      if (!match) { setDisplay(value); return; }
+      const num = parseInt(match[1].replace(/,/g, ''), 10);
+      const suffix = value.replace(match[1], '');
+      const start = performance.now();
+      const step = (ts: number) => {
+        const t = Math.min(1, (ts - start) / duration);
+        const cur = Math.floor(t * num);
+        setDisplay(cur.toLocaleString() + suffix);
+        if (t < 1) raf.current = requestAnimationFrame(step);
+      };
+      raf.current = requestAnimationFrame(step);
+      return () => { if (raf.current) cancelAnimationFrame(raf.current); };
+    }, [value, duration]);
+
+    return <span className="text-2xl md:text-3xl font-bold text-white">{display}</span>;
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 pt-24 overflow-hidden">
       {/* Animated Gradient Background */}
@@ -33,17 +76,12 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
               Varishwar <span className="text-transparent bg-clip-text bg-gradient-to-r from-azure-400 via-teal-400 to-cyan-400 animate-gradient-x bg-[length:200%_200%] drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]">Tripathi</span>
             </h1>
             <motion.h2 
-              className="text-xl md:text-2xl text-slate-400 font-light font-mono"
-              animate={{
-                opacity: [0.7, 1, 0.7]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
+              className="text-xl md:text-2xl text-slate-400 font-light"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
             >
-              {data.title}
+              <Typing text={data.title} />
             </motion.h2>
           </motion.div>
 
@@ -77,7 +115,24 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
                  </a>
              )}
           </motion.div>
-          
+
+            {/* Quick Impact Counters */}
+            {data.impactMetrics && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.05 }}
+                className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-md"
+              >
+                {data.impactMetrics.slice(0,6).map((m, idx) => (
+                  <div key={idx} className="bg-slate-900/60 border border-slate-700/40 rounded-xl p-3 flex flex-col items-start gap-1">
+                    <CountUp value={m.value} />
+                    <div className="text-xs text-slate-400">{m.label}</div>
+                  </div>
+                ))}
+              </motion.div>
+            )}
+
           {/* Resume Download Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
