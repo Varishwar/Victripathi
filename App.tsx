@@ -5,7 +5,9 @@ import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import ImpactMetrics from './components/ImpactMetrics';
 import Skills from './components/Skills';
+import KeyProjects from './components/KeyProjects';
 import Experience from './components/Experience';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
@@ -58,7 +60,9 @@ const App: React.FC = () => {
 
             {/* Content Sections */}
             <Hero data={RESUME_DATA} />
+            {RESUME_DATA.impactMetrics && <ImpactMetrics metrics={RESUME_DATA.impactMetrics} />}
             <Skills skills={RESUME_DATA.skills} />
+            {RESUME_DATA.keyProjects && <KeyProjects projects={RESUME_DATA.keyProjects} />}
             <Experience jobs={RESUME_DATA.experience} />
             <Certifications certs={RESUME_DATA.certifications} />
             <Contact contact={RESUME_DATA.contact} />

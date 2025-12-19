@@ -23,6 +23,22 @@ export interface Certification {
   badgeColor: string;
 }
 
+export interface KeyProject {
+  title: string;
+  client: string;
+  scope: string;
+  technologies: string[];
+  metrics: string[];
+  icon: string;
+}
+
+export interface ImpactMetric {
+  value: string;
+  label: string;
+  icon: string;
+  color: string;
+}
+
 export interface ProfileData {
   name: string;
   title: string;
@@ -31,4 +47,6 @@ export interface ProfileData {
   skills: SkillCategory[];
   experience: Job[];
   certifications: Certification[];
+  keyProjects?: KeyProject[];
+  impactMetrics?: ImpactMetric[];
 }

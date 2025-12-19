@@ -13,24 +13,36 @@ export const RESUME_DATA: ProfileData = {
   },
   skills: [
     {
-      category: "Core Cloud",
-      skills: ["Azure Virtual Desktop (AVD)", "Microsoft Azure Infrastructure", "Shared Image Gallery (SIG)", "FSLogix Profile Containers"]
+      category: "Core Cloud & Virtualization",
+      skills: ["Azure Virtual Desktop (AVD)", "Azure Infrastructure", "Shared Image Gallery (SIG)", "FSLogix Profile Containers", "Azure VMs", "VM Scale Sets", "Availability Zones"]
     },
     {
-      category: "Networking & Security",
-      skills: ["Azure Networking (VNet, VPN, NSG)", "Azure Firewall", "Private Endpoints", "ExpressRoute", "Zero Trust Architecture"]
+      category: "Infrastructure as Code (IaC)",
+      skills: ["Terraform (5000+ user deployments)", "ARM Templates", "Bicep", "PowerShell DSC", "Azure Blueprints", "Policy as Code"]
     },
     {
-      category: "Identity & Governance",
-      skills: ["Entra ID (Azure AD)", "Azure AD Connect", "Conditional Access", "Managed Identities", "PIM"]
+      category: "Networking & Connectivity",
+      skills: ["Azure VNet & Subnets", "VPN Gateway", "ExpressRoute", "Azure Firewall", "NSG & ASG", "Private Endpoints", "Hub-Spoke Topology", "Azure Front Door", "Load Balancer"]
     },
     {
-      category: "Automation & IaC",
-      skills: ["PowerShell Automation", "Terraform", "ARM Templates", "Bicep", "Custom Script Extensions"]
+      category: "Security & Compliance",
+      skills: ["Zero Trust Architecture", "Microsoft Sentinel (SIEM)", "Defender for Cloud", "Azure Key Vault", "Conditional Access", "PIM", "ISO 27001", "Cyber Essentials"]
     },
     {
-      category: "Endpoint Management",
-      skills: ["Intune MDM/MAM", "Autopilot", "Microsoft 365 Security", "Defender for Cloud"]
+      category: "Identity & Access Management",
+      skills: ["Entra ID (Azure AD)", "Azure AD Connect", "Hybrid Identity", "ADFS", "PHS/PTA", "Managed Identities", "SSO & MFA"]
+    },
+    {
+      category: "Monitoring & Operations",
+      skills: ["Azure Monitor", "Log Analytics", "Application Insights", "Azure Backup", "Site Recovery (DR)", "Cost Management & Optimization", "Azure Advisor"]
+    },
+    {
+      category: "DevOps & Automation",
+      skills: ["Azure DevOps Pipelines", "PowerShell Automation", "Git/GitHub", "CI/CD", "Custom Script Extensions", "Runbooks"]
+    },
+    {
+      category: "Endpoint & Device Management",
+      skills: ["Intune MDM/MAM", "Autopilot", "Windows 365", "Microsoft 365 E5", "Compliance Policies", "App Deployment"]
     }
   ],
   certifications: [
@@ -83,6 +95,78 @@ export const RESUME_DATA: ProfileData = {
         "Performed Office 365 and Exchange migrations and hybrid identity setups.",
         "Provided L1–L2 support for networking (VLANs, routing, VPN) and firewalls."
       ]
+    }
+  ],
+  keyProjects: [
+    {
+      title: "Enterprise AVD Deployment",
+      client: "UK Education Sector",
+      scope: "Deployed Azure Virtual Desktop for 5000+ users with Terraform automation, FSLogix profile management, and hybrid identity integration.",
+      technologies: ["Terraform", "AVD", "FSLogix", "Azure AD Connect", "SIG", "Azure Files"],
+      metrics: ["5000+ Users", "99.9% Uptime", "40% Cost Reduction", "2-week Deployment"],
+      icon: "Monitor"
+    },
+    {
+      title: "Azure Landing Zone Architecture",
+      client: "Multi-National Enterprise",
+      scope: "Designed and implemented Hub-Spoke network topology with ExpressRoute, Azure Firewall, and centralized governance using Azure Blueprints.",
+      technologies: ["Hub-Spoke", "ExpressRoute", "Azure Firewall", "Blueprints", "Policy", "VNet Peering"],
+      metrics: ["10+ Subscriptions", "Multi-Region HA", "Zero Trust Security", "£500K+ Project"],
+      icon: "Network"
+    },
+    {
+      title: "Cloud Migration Program",
+      client: "UK Financial Services",
+      scope: "Executed lift-and-shift migration of 200+ servers including Domain Controllers, SQL databases, and file servers with zero downtime.",
+      technologies: ["Azure Migrate", "Site Recovery", "Azure Backup", "PowerShell", "DMS", "Azure Files"],
+      metrics: ["200+ Servers", "Zero Downtime", "30% Cost Savings", "3-month Timeline"],
+      icon: "CloudUpload"
+    },
+    {
+      title: "Security & Compliance Overhaul",
+      client: "Healthcare Organization",
+      scope: "Implemented Microsoft Sentinel SIEM, Azure Security Center, and achieved ISO 27001 and Cyber Essentials Plus certification.",
+      technologies: ["Sentinel", "Defender for Cloud", "Key Vault", "Conditional Access", "PIM", "Compliance Manager"],
+      metrics: ["ISO 27001 Certified", "100% Compliance", "Threat Detection", "24/7 Monitoring"],
+      icon: "Shield"
+    }
+  ],
+  impactMetrics: [
+    {
+      value: "5000+",
+      label: "Users Deployed",
+      icon: "Users",
+      color: "from-azure-500 to-cyan-500"
+    },
+    {
+      value: "50+",
+      label: "Azure Migrations",
+      icon: "CloudUpload",
+      color: "from-teal-500 to-emerald-500"
+    },
+    {
+      value: "10+",
+      label: "Years MSP Experience",
+      icon: "Award",
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      value: "99.9%",
+      label: "Uptime SLA",
+      icon: "TrendingUp",
+      color: "from-orange-500 to-red-500"
+    },
+    {
+      value: "40%",
+      label: "Average Cost Savings",
+      icon: "DollarSign",
+      color: "from-green-500 to-teal-500"
+    },
+    {
+      value: "100+",
+      label: "Clients Managed",
+      icon: "Briefcase",
+      color: "from-indigo-500 to-blue-500"
     }
   ]
 };
