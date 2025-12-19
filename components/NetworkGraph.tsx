@@ -17,7 +17,6 @@ interface Edge {
 const GraphScene: React.FC = () => {
   const group = useRef<THREE.Group>(null!);
   const { size } = useThree();
-  const [hovered, setHovered] = useState<number | null>(null);
 
   // Create nodes in a loose cloud
   const { nodes, edges, flows } = useMemo(() => {
@@ -83,10 +82,7 @@ const GraphScene: React.FC = () => {
         return <FlowParticle key={idx} a={a} b={b} speed={f.speed} />;
       })}
 
-      {/* Nodes */}
-      {nodes.map((n) => (
-        <NodeSphere key={n.id} pos={n.pos} highlighted={hovered === n.id} onPointerOver={() => setHovered(n.id)} onPointerOut={() => setHovered(null)} />
-      ))}
+      {/* Nodes intentionally hidden: rendering only connector lines to avoid filled dot markers */}
 
       {/* optional controls for debugging */}
       {/* <OrbitControls enableZoom={false} enablePan={false} /> */}
@@ -94,26 +90,7 @@ const GraphScene: React.FC = () => {
   );
 };
 
-const NodeSphere: React.FC<{ pos: THREE.Vector3; highlighted?: boolean; onPointerOver?: () => void; onPointerOut?: () => void; }> = ({ pos, highlighted, onPointerOver, onPointerOut }) => {
-  const ref = useRef<THREE.Mesh>(null!);
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    if (ref.current) {
-      ref.current.scale.setScalar(1 + Math.sin(t * 2 + pos.x) * 0.07 + (highlighted ? 0.25 : 0));
-    }
-  });
-  return (
-    <mesh
-      ref={ref}
-      position={[pos.x, pos.y, pos.z]}
-      onPointerOver={(e) => { e.stopPropagation(); onPointerOver && onPointerOver(); }}
-      onPointerOut={(e) => { e.stopPropagation(); onPointerOut && onPointerOut(); }}
-    >
-      <sphereGeometry args={[0.9, 24, 24]} />
-      <meshStandardMaterial emissive={new THREE.Color('#60a5fa')} emissiveIntensity={0.6} color={'#0f172a'} metalness={0.2} roughness={0.3} />
-    </mesh>
-  );
-};
+// NodeSphere removed — keeping graph lines only to avoid visual filled nodes
 
 const FlowParticle: React.FC<{ a: THREE.Vector3; b: THREE.Vector3; speed: number }> = ({ a, b, speed }) => {
   const ref = useRef<THREE.Mesh>(null!);
