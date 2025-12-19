@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { ArrowDown, Mail, MapPin, Linkedin, Server, Database, Shield, Smartphone, Download } from 'lucide-react';
 import NetworkGraph from './NetworkGraph';
 import ConnectorLines from './ConnectorLines';
-import React from 'react';
 import { ProfileData } from '../types';
 
 interface HeroProps {
