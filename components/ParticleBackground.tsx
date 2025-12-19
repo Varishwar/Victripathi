@@ -25,9 +25,10 @@ const SimpleParticles = () => {
     uColor2: { value: new THREE.Color('#7c3aed') }
   });
 
-  const bgCount = 900;
-  const fgCount = 300;
-  const starMax = 4; // max concurrent shooting stars
+  // Reduce particle counts and strength to remove clutter and tiny dots
+  const bgCount = 200;
+  const fgCount = 60;
+  const starMax = 3; // max concurrent shooting stars
 
   const { bgPositions, bgScales, bgRandoms, fgPositions, fgScales, fgRandoms } = useMemo(() => {
     const bgPositions = new Float32Array(bgCount * 3);
@@ -146,9 +147,9 @@ const SimpleParticles = () => {
               }
               vec4 mvPos = modelViewMatrix * vec4(pos,1.0);
               gl_Position = projectionMatrix * mvPos;
-              gl_PointSize = aScale * 18.0 * (1.0 / -mvPos.z);
+              gl_PointSize = aScale * 10.0 * (1.0 / -mvPos.z);
               vMix = aRandom.x;
-              vAlpha = 0.25 + force * 0.6;
+              vAlpha = 0.12 + force * 0.35;
             }
           `}
           fragmentShader={`
@@ -203,9 +204,9 @@ const SimpleParticles = () => {
               }
               vec4 mvPos = modelViewMatrix * vec4(pos,1.0);
               gl_Position = projectionMatrix * mvPos;
-              gl_PointSize = aScale * 30.0 * (1.0 / -mvPos.z);
+              gl_PointSize = aScale * 14.0 * (1.0 / -mvPos.z);
               vMix = aRandom.x;
-              vAlpha = 0.45 + force * 0.5;
+              vAlpha = 0.22 + force * 0.3;
             }
           `}
           fragmentShader={`

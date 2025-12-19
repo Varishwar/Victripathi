@@ -49,7 +49,8 @@ const GraphScene: React.FC = () => {
         }
       }
     }
-    return { nodes, edges, flows };
+    // Disable flow particles for now to avoid tiny floating dots.
+    return { nodes, edges, flows: [] };
   }, []);
 
   useFrame((state) => {
