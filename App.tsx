@@ -5,9 +5,12 @@ import Loader from './components/Loader';
 import CustomCursor from './components/CustomCursor';
 import ScrollProgress from './components/ScrollProgress';
 import SectionDivider from './components/SectionDivider';
+import FloatingCTA from './components/FloatingCTA';
+import LiveStats from './components/LiveStats';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import ImpactMetrics from './components/ImpactMetrics';
+import TechStack from './components/TechStack';
 import Skills from './components/Skills';
 import KeyProjects from './components/KeyProjects';
 import Experience from './components/Experience';
@@ -44,6 +47,8 @@ const App: React.FC = () => {
     <>
       <CustomCursor />
       <ScrollProgress />
+      <FloatingCTA />
+      <LiveStats />
       
       <AnimatePresence mode="wait">
         {loading && <Loader key="loader" />}
@@ -66,6 +71,8 @@ const App: React.FC = () => {
             <SectionDivider />
             {RESUME_DATA.impactMetrics && <ImpactMetrics metrics={RESUME_DATA.impactMetrics} />}
             <SectionDivider gradient="from-teal-500 via-emerald-500 to-green-500" />
+            <TechStack />
+            <SectionDivider gradient="from-purple-500 via-indigo-500 to-blue-500" />
             <Skills skills={RESUME_DATA.skills} />
             <SectionDivider gradient="from-purple-500 via-pink-500 to-rose-500" />
             {RESUME_DATA.keyProjects && <KeyProjects projects={RESUME_DATA.keyProjects} />}
