@@ -20,30 +20,30 @@ const ConnectorLines: React.FC = () => {
 
         {/* four cross lines using percentages so they stay responsive */}
         <motion.line x1="50%" y1="50%" x2="88%" y2="18%" stroke="url(#g1)" strokeWidth={0.6} strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0, 1, 0] }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: 'linear' }}
+          strokeDasharray="6 6"
+          animate={{ strokeDashoffset: [0, -48] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
           style={{ opacity: 0.9 }}
         />
 
         <motion.line x1="50%" y1="50%" x2="12%" y2="15%" stroke="url(#g2)" strokeWidth={0.5} strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0, 1, 0] }}
-          transition={{ duration: 3.6, repeat: Infinity, ease: 'linear', delay: 0.4 }}
+          strokeDasharray="6 6"
+          animate={{ strokeDashoffset: [0, -48] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'linear', delay: 0.4 }}
           style={{ opacity: 0.75 }}
         />
 
         <motion.line x1="50%" y1="50%" x2="15%" y2="85%" stroke="url(#g1)" strokeWidth={0.5} strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0, 1, 0] }}
-          transition={{ duration: 3.9, repeat: Infinity, ease: 'linear', delay: 0.9 }}
+          strokeDasharray="6 6"
+          animate={{ strokeDashoffset: [0, -48] }}
+          transition={{ duration: 2.6, repeat: Infinity, ease: 'linear', delay: 0.9 }}
           style={{ opacity: 0.75 }}
         />
 
         <motion.line x1="50%" y1="50%" x2="90%" y2="88%" stroke="url(#g2)" strokeWidth={0.6} strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: [0, 1, 0] }}
-          transition={{ duration: 3.0, repeat: Infinity, ease: 'linear', delay: 1.1 }}
+          strokeDasharray="6 6"
+          animate={{ strokeDashoffset: [0, -48] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: 'linear', delay: 1.1 }}
           style={{ opacity: 0.85 }}
         />
       </svg>
