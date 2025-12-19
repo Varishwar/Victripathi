@@ -1,31 +1,51 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const ConnectorLines: React.FC = () => {
-  // Using an SVG overlay with animated dash offset to simulate running lines
-  const style = `
-    @keyframes dashMove { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -40; } }
-  `;
-
   return (
     <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 9 }}>
-      <style>{style}</style>
-      <svg viewBox="0 0 1000 600" preserveAspectRatio="none" className="w-full h-full">
+      <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
         <defs>
-          <linearGradient id="cgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="rgba(56,189,248,0)" />
-            <stop offset="50%" stopColor="rgba(56,189,248,0.45)" />
+            <stop offset="50%" stopColor="rgba(56,189,248,0.6)" />
             <stop offset="100%" stopColor="rgba(56,189,248,0)" />
+          </linearGradient>
+          <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(168,85,247,0)" />
+            <stop offset="50%" stopColor="rgba(168,85,247,0.6)" />
+            <stop offset="100%" stopColor="rgba(168,85,247,0)" />
           </linearGradient>
         </defs>
 
-        {/* Top-right */}
-        <line x1="500" y1="300" x2="920" y2="80" stroke="url(#cgrad)" strokeWidth="1.5" strokeDasharray="8 8" style={{ opacity: 0.85, animation: 'dashMove 1.6s linear infinite' }} />
-        {/* Top-left */}
-        <line x1="500" y1="300" x2="80" y2="60" stroke="url(#cgrad)" strokeWidth="1.5" strokeDasharray="8 8" style={{ opacity: 0.7, animation: 'dashMove 1.9s linear infinite' }} />
-        {/* Bottom-left */}
-        <line x1="500" y1="300" x2="80" y2="520" stroke="url(#cgrad)" strokeWidth="1.5" strokeDasharray="8 8" style={{ opacity: 0.7, animation: 'dashMove 1.8s linear infinite' }} />
-        {/* Bottom-right */}
-        <line x1="500" y1="300" x2="920" y2="520" stroke="url(#cgrad)" strokeWidth="1.5" strokeDasharray="8 8" style={{ opacity: 0.85, animation: 'dashMove 1.5s linear infinite' }} />
+        {/* four cross lines using percentages so they stay responsive */}
+        <motion.line x1="50%" y1="50%" x2="88%" y2="18%" stroke="url(#g1)" strokeWidth={0.6} strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: [0, 1, 0] }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: 'linear' }}
+          style={{ opacity: 0.9 }}
+        />
+
+        <motion.line x1="50%" y1="50%" x2="12%" y2="15%" stroke="url(#g2)" strokeWidth={0.5} strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: [0, 1, 0] }}
+          transition={{ duration: 3.6, repeat: Infinity, ease: 'linear', delay: 0.4 }}
+          style={{ opacity: 0.75 }}
+        />
+
+        <motion.line x1="50%" y1="50%" x2="15%" y2="85%" stroke="url(#g1)" strokeWidth={0.5} strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: [0, 1, 0] }}
+          transition={{ duration: 3.9, repeat: Infinity, ease: 'linear', delay: 0.9 }}
+          style={{ opacity: 0.75 }}
+        />
+
+        <motion.line x1="50%" y1="50%" x2="90%" y2="88%" stroke="url(#g2)" strokeWidth={0.6} strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: [0, 1, 0] }}
+          transition={{ duration: 3.0, repeat: Infinity, ease: 'linear', delay: 1.1 }}
+          style={{ opacity: 0.85 }}
+        />
       </svg>
     </div>
   );
