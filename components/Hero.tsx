@@ -206,8 +206,7 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
               />
            </motion.div>
 
-           {/* Connector animated dashed lines (restored) */}
-           <ConnectorLines />
+           {/* Connector animated dashed lines removed per request */}
 
            {/* Interactive 3D network graph layered above the connector lines */}
            <div className="absolute inset-0 w-full h-full pointer-events-none z-10">

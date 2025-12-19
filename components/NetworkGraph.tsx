@@ -24,37 +24,9 @@ const GraphScene: React.FC = () => {
     const edges: Edge[] = [];
     const flows: { edgeIndex: number; t: number; speed: number }[] = [];
     const N = 10;
-    for (let i = 0; i < N; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const r = 12 + Math.random() * 18;
-      const z = (Math.random() - 0.5) * 8;
-      nodes.push({ id: i, pos: new THREE.Vector3(Math.cos(theta) * r, Math.sin(theta) * r * 0.6, z) });
-    }
-    // connect nearest neighbors
-    for (let i = 0; i < N; i++) {
-      const dists: { j: number; d: number }[] = [];
-      for (let j = 0; j < N; j++) if (i !== j) dists.push({ j, d: nodes[i].pos.distanceTo(nodes[j].pos) });
-      dists.sort((a, b) => a.d - b.d);
-      // connect to up to 3 nearest
-      for (let k = 0; k < 3; k++) {
-        const j = dists[k]?.j;
-        if (j === undefined) continue;
-        // avoid duplicates
-        if (!edges.find(e => (e.a === i && e.b === j) || (e.a === j && e.b === i))) {
-          const len = nodes[i].pos.distanceTo(nodes[j].pos);
-          edges.push({ a: i, b: j, len });
-          // add a flow particle for some edges
-          if (Math.random() < 0.45) flows.push({ edgeIndex: edges.length - 1, t: Math.random(), speed: 0.2 + Math.random() * 0.6 });
-        }
-      }
-    }
-    // Disable flow particles for now to avoid tiny floating dots.
-    return { nodes, edges, flows: [] };
-  }, []);
-
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime();
-    // animate group rotation slowly
+      <group ref={group} dispose={null}>
+        {/* Lines and nodes disabled — returning empty group to remove visual connectors */}
+      </group>
     if (group.current) group.current.rotation.z = Math.sin(t * 0.08) * 0.06;
   });
 
