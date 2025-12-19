@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Mail, MapPin, Linkedin, Server, Database, Shield, Smartphone, Download } from 'lucide-react';
 import NetworkGraph from './NetworkGraph';
+import ConnectorLines from './ConnectorLines';
 import React from 'react';
 import { ProfileData } from '../types';
 
@@ -205,16 +206,14 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
               />
            </motion.div>
 
-           {/* Replaced static SVG lines with interactive 3D network graph */}
+           {/* Connector animated dashed lines (restored) */}
+           <ConnectorLines />
+
+           {/* Interactive 3D network graph layered above the connector lines */}
            <div className="absolute inset-0 w-full h-full pointer-events-none z-10">
-             <div style={{ width: '100%', height: '100%' }}>
-               <div style={{ width: '100%', height: '100%' }}>
-                 {/* Lazy load the network graph canvas */}
-                 <React.Suspense fallback={null}>
-                   <NetworkGraph />
-                 </React.Suspense>
-               </div>
-             </div>
+             <React.Suspense fallback={null}>
+               <NetworkGraph />
+             </React.Suspense>
            </div>
 
            {/* 1. AVD/Virtual Desktop (Top Right) */}
