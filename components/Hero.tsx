@@ -10,6 +10,13 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ data }) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-6 pt-24 overflow-hidden">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-azure-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/2 -left-40 w-80 h-80 bg-teal-500/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-20 right-1/4 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+      </div>
+      
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 z-10">
         
         {/* Left: Text Content */}
@@ -22,8 +29,8 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
             <span className="inline-block px-3 py-1 mb-4 text-xs font-mono font-semibold tracking-wider text-azure-950 bg-azure-400 rounded-full shadow-[0_0_15px_rgba(56,189,248,0.4)]">
               AZURE INFRASTRUCTURE LEAD
             </span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-2">
-              Varishwar <span className="text-transparent bg-clip-text bg-gradient-to-r from-azure-400 to-teal-400">Tripathi</span>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-2 drop-shadow-2xl">
+              Varishwar <span className="text-transparent bg-clip-text bg-gradient-to-r from-azure-400 via-teal-400 to-cyan-400 animate-gradient-x bg-[length:200%_200%]">Tripathi</span>
             </h1>
             <h2 className="text-xl md:text-2xl text-slate-400 font-light font-mono">
               {data.title}

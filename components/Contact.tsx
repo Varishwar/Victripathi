@@ -9,8 +9,14 @@ interface ContactProps {
 
 const Contact: React.FC<ContactProps> = ({ contact }) => {
   return (
-    <section id="contact" className="py-24 px-6 relative z-10 bg-gradient-to-t from-slate-950 to-slate-900/50">
-      <div className="container mx-auto max-w-4xl text-center">
+    <section id="contact" className="py-24 px-6 relative z-10 bg-gradient-to-t from-slate-950 via-slate-900/50 to-transparent overflow-hidden\">
+      {/* Animated background orbs */}
+      <div className=\"absolute inset-0 overflow-hidden pointer-events-none\">
+        <div className=\"absolute top-10 left-10 w-72 h-72 bg-azure-500/10 rounded-full blur-3xl animate-float\"></div>
+        <div className=\"absolute bottom-10 right-10 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl animate-float\" style={{animationDelay: '2s'}}></div>
+      </div>
+      
+      <div className=\"container mx-auto max-w-4xl text-center relative z-10\">"
         
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -33,11 +39,11 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
         >
             <a 
               href={`mailto:${contact.email}`}
-              className="group relative w-full md:w-auto flex items-center justify-center space-x-3 px-8 py-4 bg-azure-600 hover:bg-azure-500 text-white rounded-xl transition-all shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] overflow-hidden"
+              className="group relative w-full md:w-auto flex items-center justify-center space-x-3 px-8 py-4 bg-gradient-to-r from-azure-600 to-azure-500 hover:from-azure-500 hover:to-teal-500 text-white rounded-xl transition-all duration-500 shadow-[0_0_25px_rgba(14,165,233,0.4)] hover:shadow-[0_0_40px_rgba(14,165,233,0.6)] hover:scale-105 overflow-hidden"
             >
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
               <Mail className="relative z-10 w-5 h-5" />
-              <span className="relative z-10 font-medium text-lg">Send Email</span>
+              <span className="relative z-10 font-semibold text-lg">Send Email</span>
               <ArrowRight className="relative z-10 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
 
