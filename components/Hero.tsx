@@ -87,102 +87,211 @@ const Hero: React.FC<HeroProps> = ({ data }) => {
           </motion.div>
         </div>
 
-        {/* Right: Visual Abstract - Virtualization & Infrastructure Animations */}
+        {/* Right: Azure Architecture Ecosystem Visualization */}
         <div className="lg:col-span-5 hidden lg:flex items-center justify-center relative min-h-[500px]">
            
-           {/* Background Rings */}
+           {/* Central Azure Cloud Hub */}
            <motion.div 
-             className="absolute inset-0 m-auto w-[28rem] h-[28rem] border border-slate-800 rounded-full"
-             animate={{ rotate: 360 }}
-             transition={{ duration: 60, ease: "linear", repeat: Infinity }}
-           />
-           <motion.div 
-             className="absolute inset-0 m-auto w-[22rem] h-[22rem] border border-dashed border-slate-800/50 rounded-full"
-             animate={{ rotate: -360 }}
-             transition={{ duration: 40, ease: "linear", repeat: Infinity }}
-           />
+             className="relative z-20 w-40 h-40 flex items-center justify-center"
+             animate={{ 
+               scale: [1, 1.05, 1],
+               rotateY: [0, 360]
+             }}
+             transition={{ 
+               scale: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+               rotateY: { duration: 20, repeat: Infinity, ease: "linear" }
+             }}
+           >
+              <div className="absolute inset-0 bg-gradient-to-br from-azure-500/30 via-teal-500/30 to-cyan-500/30 rounded-2xl blur-xl animate-glow-pulse"></div>
+              <div className="relative bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-md border-2 border-azure-500/50 rounded-2xl p-6 shadow-[0_0_40px_rgba(56,189,248,0.3)]">
+                <div className="text-center">
+                  <div className="text-azure-400 font-bold text-sm mb-1">AZURE</div>
+                  <div className="text-white font-bold text-lg">CLOUD</div>
+                  <div className="text-xs text-slate-400 mt-1">Infrastructure</div>
+                </div>
+              </div>
+              {/* Rotating Data Rings */}
+              <motion.div 
+                className="absolute inset-0 w-full h-full border border-azure-500/30 rounded-2xl"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.div 
+                className="absolute inset-0 w-full h-full border border-dashed border-teal-500/20 rounded-2xl"
+                animate={{ rotate: -360 }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              />
+           </motion.div>
 
-           {/* 1. Virtualization / Host Pool (Top Right) */}
-           <div className="absolute top-4 right-12">
-              <div className="relative w-32 h-32 transform hover:scale-105 transition-transform cursor-default">
-                 <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-md border border-azure-500/30 rounded-lg flex items-center justify-center z-10 shadow-[0_0_20px_rgba(56,189,248,0.1)]">
-                    <Server className="text-azure-400 w-8 h-8" />
-                 </div>
-                 {[...Array(4)].map((_, i) => (
+           {/* Connecting Network Lines */}
+           <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
+             <motion.line 
+               x1="50%" y1="50%" x2="85%" y2="20%"
+               stroke="url(#gradient1)" strokeWidth="2" strokeDasharray="5,5"
+               initial={{ pathLength: 0 }}
+               animate={{ pathLength: [0, 1, 0] }}
+               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+             />
+             <motion.line 
+               x1="50%" y1="50%" x2="15%" y2="25%"
+               stroke="url(#gradient2)" strokeWidth="2" strokeDasharray="5,5"
+               initial={{ pathLength: 0 }}
+               animate={{ pathLength: [0, 1, 0] }}
+               transition={{ duration: 3.5, repeat: Infinity, ease: "linear", delay: 0.5 }}
+             />
+             <motion.line 
+               x1="50%" y1="50%" x2="10%" y2="70%"
+               stroke="url(#gradient3)" strokeWidth="2" strokeDasharray="5,5"
+               initial={{ pathLength: 0 }}
+               animate={{ pathLength: [0, 1, 0] }}
+               transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: 1 }}
+             />
+             <motion.line 
+               x1="50%" y1="50%" x2="88%" y2="75%"
+               stroke="url(#gradient4)" strokeWidth="2" strokeDasharray="5,5"
+               initial={{ pathLength: 0 }}
+               animate={{ pathLength: [0, 1, 0] }}
+               transition={{ duration: 3.2, repeat: Infinity, ease: "linear", delay: 1.5 }}
+             />
+             <defs>
+               <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                 <stop offset="0%" stopColor="rgba(56,189,248,0)" />
+                 <stop offset="50%" stopColor="rgba(56,189,248,0.6)" />
+                 <stop offset="100%" stopColor="rgba(56,189,248,0)" />
+               </linearGradient>
+               <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                 <stop offset="0%" stopColor="rgba(168,85,247,0)" />
+                 <stop offset="50%" stopColor="rgba(168,85,247,0.6)" />
+                 <stop offset="100%" stopColor="rgba(168,85,247,0)" />
+               </linearGradient>
+               <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="0%">
+                 <stop offset="0%" stopColor="rgba(20,184,166,0)" />
+                 <stop offset="50%" stopColor="rgba(20,184,166,0.6)" />
+                 <stop offset="100%" stopColor="rgba(20,184,166,0)" />
+               </linearGradient>
+               <linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="0%">
+                 <stop offset="0%" stopColor="rgba(236,72,153,0)" />
+                 <stop offset="50%" stopColor="rgba(236,72,153,0.6)" />
+                 <stop offset="100%" stopColor="rgba(236,72,153,0)" />
+               </linearGradient>
+             </defs>
+           </svg>
+
+           {/* 1. AVD/Virtual Desktop (Top Right) */}
+           <motion.div 
+             className="absolute top-8 right-12"
+             whileHover={{ scale: 1.1, rotate: 5 }}
+             transition={{ type: "spring", stiffness: 300 }}
+           >
+              <div className="relative w-32 h-28 group cursor-pointer">
+                 <div className="absolute inset-0 bg-gradient-to-br from-azure-500/20 to-cyan-500/20 rounded-xl blur-lg group-hover:blur-xl transition-all duration-300"></div>
+                 <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-800/95 backdrop-blur-md border border-azure-500/40 rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_0_25px_rgba(56,189,248,0.2)] group-hover:shadow-[0_0_40px_rgba(56,189,248,0.4)] transition-all">
                     <motion.div
-                        key={i}
-                        className="absolute w-8 h-8 bg-slate-800 border border-azure-400/50 rounded flex items-center justify-center"
-                        animate={{ 
-                            x: [0, (i % 2 === 0 ? 45 : -45), 0],
-                            y: [0, (i < 2 ? -45 : 45), 0],
-                            opacity: [0, 1, 0]
-                        }}
-                        transition={{ 
-                            duration: 4, 
-                            repeat: Infinity, 
-                            delay: i * 0.5,
-                            ease: "easeInOut"
-                        }}
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 2, repeat: Infinity }}
                     >
-                        <div className="w-1.5 h-1.5 bg-azure-400 rounded-sm"></div>
+                      <Server className="text-azure-400 w-8 h-8" />
                     </motion.div>
-                 ))}
-                 <div className="absolute -bottom-8 left-0 right-0 text-center text-xs font-mono text-azure-300 bg-slate-950/50 py-1 rounded">Host Pools</div>
-              </div>
-           </div>
-
-           {/* 2. Cloud Sync (Bottom Left) */}
-           <div className="absolute bottom-12 left-8">
-              <div className="relative w-28 h-28 flex items-center justify-center transform hover:scale-105 transition-transform cursor-default">
-                 <div className="absolute w-full h-full border-2 border-teal-500/20 rounded-full animate-ping-slow"></div>
-                 <div className="z-10 bg-slate-900/80 backdrop-blur-md p-4 rounded-full border border-teal-500/30">
-                    <Database className="text-teal-400 w-8 h-8" />
-                 </div>
-                 <motion.div 
-                    className="absolute w-full h-full border-t-2 border-teal-400 rounded-full"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                 />
-                 <div className="absolute -bottom-8 left-0 right-0 text-center text-xs font-mono text-teal-300 bg-slate-950/50 py-1 rounded">Hybrid Sync</div>
-              </div>
-           </div>
-
-           {/* 3. Zero Trust (Top Left) */}
-           <div className="absolute top-12 left-6">
-               <div className="relative w-28 h-28 transform hover:scale-105 transition-transform cursor-default">
-                    <div className="absolute inset-0 flex items-center justify-center z-20">
-                        <Shield className="w-12 h-12 text-purple-400" />
+                    <div className="text-center">
+                      <div className="text-azure-300 font-bold text-xs">Azure AVD</div>
+                      <div className="text-slate-400 text-[10px]">5000+ Users</div>
                     </div>
-                    <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-purple-500/10 to-transparent rounded-full origin-bottom"
-                        style={{ clipPath: 'polygon(50% 50%, 0 0, 100% 0)' }}
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                    />
-                    <motion.div 
-                        className="absolute inset-0 border border-purple-500/30 rounded-full"
-                        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                    />
-                    <div className="absolute -bottom-8 left-0 right-0 text-center text-xs font-mono text-purple-300 bg-slate-950/50 py-1 rounded">Zero Trust</div>
-               </div>
-           </div>
+                 </div>
+              </div>
+           </motion.div>
 
-           {/* 4. Intune / Endpoint Manager (Bottom Right) */}
-           <div className="absolute bottom-4 right-8">
-              <div className="relative w-24 h-36 transform hover:scale-105 transition-transform cursor-default">
-                 <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-md border border-pink-500/30 rounded-xl flex items-center justify-center z-10 overflow-hidden">
-                    <Smartphone className="text-pink-400 w-10 h-10" />
-                    {/* Scanning Line */}
+           {/* 2. Security & Compliance (Top Left) */}
+           <motion.div 
+             className="absolute top-12 left-8"
+             whileHover={{ scale: 1.1, rotate: -5 }}
+             transition={{ type: "spring", stiffness: 300 }}
+           >
+              <div className="relative w-28 h-28 group cursor-pointer">
+                 <motion.div 
+                   className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-lg group-hover:blur-xl transition-all duration-300"
+                   animate={{ scale: [1, 1.2, 1] }}
+                   transition={{ duration: 2, repeat: Infinity }}
+                 />
+                 <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-800/95 backdrop-blur-md border border-purple-500/40 rounded-full w-full h-full flex items-center justify-center shadow-[0_0_25px_rgba(168,85,247,0.2)] group-hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition-all">
+                    <div className="text-center">
+                      <Shield className="w-10 h-10 text-purple-400 mx-auto mb-1" />
+                      <div className="text-purple-300 font-bold text-[10px]">Zero Trust</div>
+                    </div>
+                 </div>
+                 {/* Security Scan Effect */}
+                 <motion.div
+                   className="absolute inset-0 border-2 border-purple-400/50 rounded-full"
+                   animate={{ scale: [1, 1.4], opacity: [0.6, 0] }}
+                   transition={{ duration: 2, repeat: Infinity }}
+                 />
+              </div>
+           </motion.div>
+
+           {/* 3. Terraform/IaC (Bottom Left) */}
+           <motion.div 
+             className="absolute bottom-16 left-6"
+             whileHover={{ scale: 1.1, rotate: 5 }}
+             transition={{ type: "spring", stiffness: 300 }}
+           >
+              <div className="relative w-32 h-28 group cursor-pointer">
+                 <div className="absolute inset-0 bg-gradient-to-br from-teal-500/20 to-emerald-500/20 rounded-xl blur-lg group-hover:blur-xl transition-all duration-300"></div>
+                 <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-800/95 backdrop-blur-md border border-teal-500/40 rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_0_25px_rgba(20,184,166,0.2)] group-hover:shadow-[0_0_40px_rgba(20,184,166,0.4)] transition-all">
+                    <motion.div
+                      animate={{ rotate: [0, 180, 360] }}
+                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Database className="text-teal-400 w-8 h-8" />
+                    </motion.div>
+                    <div className="text-center">
+                      <div className="text-teal-300 font-bold text-xs">Terraform</div>
+                      <div className="text-slate-400 text-[10px]">IaC Expert</div>
+                    </div>
+                 </div>
+                 {/* Code Flow Animation */}
+                 {[...Array(3)].map((_, i) => (
+                   <motion.div
+                     key={i}
+                     className="absolute top-1/2 left-1/2 w-1 h-1 bg-teal-400 rounded-full"
+                     animate={{
+                       x: [0, -30, 0],
+                       y: [0, -20, 0],
+                       opacity: [0, 1, 0],
+                       scale: [0, 1, 0]
+                     }}
+                     transition={{
+                       duration: 2,
+                       repeat: Infinity,
+                       delay: i * 0.6,
+                       ease: "easeOut"
+                     }}
+                   />
+                 ))}
+              </div>
+           </motion.div>
+
+           {/* 4. Endpoint Management (Bottom Right) */}
+           <motion.div 
+             className="absolute bottom-8 right-10"
+             whileHover={{ scale: 1.1, rotate: -5 }}
+             transition={{ type: "spring", stiffness: 300 }}
+           >
+              <div className="relative w-28 h-32 group cursor-pointer">
+                 <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-rose-500/20 rounded-2xl blur-lg group-hover:blur-xl transition-all duration-300"></div>
+                 <div className="relative bg-gradient-to-br from-slate-900/95 to-slate-800/95 backdrop-blur-md border border-pink-500/40 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 shadow-[0_0_25px_rgba(236,72,153,0.2)] group-hover:shadow-[0_0_40px_rgba(236,72,153,0.4)] transition-all overflow-hidden">
+                    <Smartphone className="text-pink-400 w-10 h-10 z-10" />
+                    <div className="text-center z-10">
+                      <div className="text-pink-300 font-bold text-xs">Intune MDM</div>
+                      <div className="text-slate-400 text-[10px]">Autopilot</div>
+                    </div>
+                    {/* Scanning Animation */}
                     <motion.div 
-                        className="absolute top-0 left-0 w-full h-1 bg-pink-400 shadow-[0_0_10px_rgba(236,72,153,0.8)]"
-                        animate={{ top: ['0%', '100%', '0%'] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                      className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-pink-400 to-transparent shadow-[0_0_15px_rgba(236,72,153,0.8)]"
+                      animate={{ top: ['0%', '100%'] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                     />
                  </div>
-                 <div className="absolute -bottom-8 left-0 right-0 text-center text-xs font-mono text-pink-300 bg-slate-950/50 py-1 rounded">Intune MDM</div>
               </div>
-           </div>
+           </motion.div>
 
         </div>
       </div>
