@@ -14,148 +14,252 @@ const ParticleBackground: React.FC = () => {
 };
 
 const SimpleParticles = () => {
-  const points = useRef<THREE.Points>(null!);
-  
-  // Uniforms to pass data to the shader
+  const bgRef = useRef<THREE.Points>(null!);
+  const fgRef = useRef<THREE.Points>(null!);
+  const starsRef = useRef<THREE.Points>(null!);
+
   const uniforms = useRef({
     uTime: { value: 0 },
-    uMouse: { value: new THREE.Vector3(1000, 1000, 0) }, // Start off-screen
-    uColor1: { value: new THREE.Color('#38bdf8') }, // Azure
-    uColor2: { value: new THREE.Color('#7c3aed') }  // Purple accent
+    uMouse: { value: new THREE.Vector3(1000, 1000, 0) },
+    uColor1: { value: new THREE.Color('#38bdf8') },
+    uColor2: { value: new THREE.Color('#7c3aed') }
   });
 
-  const count = 1200; // Reduced particle count for performance and clarity
-  
-  const { positions, scales, randoms } = useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    const scales = new Float32Array(count);
-    const randoms = new Float32Array(count * 3); // Random values for drift/mix
-    
-    for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 60;     // x spread
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 40; // y spread
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20; // z depth
-      
-      // Bias scales toward smaller sizes while keeping some larger
-      scales[i] = 0.4 + Math.pow(Math.random(), 2) * 1.2;
+  const bgCount = 900;
+  const fgCount = 300;
+  const starMax = 4; // max concurrent shooting stars
 
-      // randoms: x = color mix, y = twinkle offset, z = drift seed
-      randoms[i * 3] = Math.random();
-      randoms[i * 3 + 1] = Math.random();
-      randoms[i * 3 + 2] = Math.random();
+  const { bgPositions, bgScales, bgRandoms, fgPositions, fgScales, fgRandoms } = useMemo(() => {
+    const bgPositions = new Float32Array(bgCount * 3);
+    const bgScales = new Float32Array(bgCount);
+    const bgRandoms = new Float32Array(bgCount * 3);
+
+    const fgPositions = new Float32Array(fgCount * 3);
+    const fgScales = new Float32Array(fgCount);
+    const fgRandoms = new Float32Array(fgCount * 3);
+
+    for (let i = 0; i < bgCount; i++) {
+      bgPositions[i * 3] = (Math.random() - 0.5) * 120;
+      bgPositions[i * 3 + 1] = (Math.random() - 0.5) * 80;
+      bgPositions[i * 3 + 2] = -20 - Math.random() * 40; // further back
+      bgScales[i] = 0.3 + Math.random() * 0.8;
+      bgRandoms[i * 3] = Math.random();
+      bgRandoms[i * 3 + 1] = Math.random();
+      bgRandoms[i * 3 + 2] = Math.random();
     }
-    return { positions, scales, randoms };
+
+    for (let i = 0; i < fgCount; i++) {
+      fgPositions[i * 3] = (Math.random() - 0.5) * 80;
+      fgPositions[i * 3 + 1] = (Math.random() - 0.5) * 60;
+      fgPositions[i * 3 + 2] = -2 - Math.random() * 8; // near camera
+      fgScales[i] = 0.6 + Math.random() * 1.6;
+      fgRandoms[i * 3] = Math.random();
+      fgRandoms[i * 3 + 1] = Math.random();
+      fgRandoms[i * 3 + 2] = Math.random();
+    }
+
+    return { bgPositions, bgScales, bgRandoms, fgPositions, fgScales, fgRandoms };
   }, []);
+
+  // Shooting stars state
+  const starPositions = useRef(new Float32Array(starMax * 3));
+  const starAlphas = useRef(new Float32Array(starMax));
+  const starVel = useRef(new Array(starMax).fill(null).map(() => new THREE.Vector3()));
+  const starLife = useRef(new Array(starMax).fill(0));
 
   useFrame((state) => {
     const { clock, pointer, viewport } = state;
-    uniforms.current.uTime.value = clock.getElapsedTime();
+    const t = clock.getElapsedTime();
+    uniforms.current.uTime.value = t;
 
-    // Map normalized pointer coordinates (-1 to 1) to world coordinates at z=0
     const x = (pointer.x * viewport.width) / 2;
     const y = (pointer.y * viewport.height) / 2;
-
-    // Smoothly interpolate mouse position for fluid effect
     uniforms.current.uMouse.value.lerp(new THREE.Vector3(x, y, 0), 0.08);
+
+    // Update shooting stars
+    for (let i = 0; i < starMax; i++) {
+      if (starLife.current[i] > 0) {
+        starLife.current[i] -= state.clock.getDelta();
+        starPositions.current[i * 3] += starVel.current[i].x * state.clock.getDelta();
+        starPositions.current[i * 3 + 1] += starVel.current[i].y * state.clock.getDelta();
+        starPositions.current[i * 3 + 2] += starVel.current[i].z * state.clock.getDelta();
+        starAlphas.current[i] = Math.max(0, starLife.current[i] / 1.6);
+      } else if (Math.random() < 0.001) {
+        // spawn a new star occasionally
+        const sx = (Math.random() - 0.5) * 140;
+        const sy = 60 + Math.random() * 30; // start above
+        const sz = -5 - Math.random() * 10;
+        starPositions.current[i * 3] = sx;
+        starPositions.current[i * 3 + 1] = sy;
+        starPositions.current[i * 3 + 2] = sz;
+        // velocity mostly diagonal across screen
+        starVel.current[i].set(-20 - Math.random() * 30, -30 - Math.random() * 30, 0.5 + Math.random());
+        starLife.current[i] = 1.2 + Math.random() * 0.8;
+        starAlphas.current[i] = 1.0;
+      }
+    }
+
+    // Push updated star attributes to GPU
+    if (starsRef.current) {
+      const geom = starsRef.current.geometry as THREE.BufferGeometry;
+      (geom.attributes.position as THREE.BufferAttribute).array = starPositions.current as any;
+      (geom.attributes.position as THREE.BufferAttribute).needsUpdate = true;
+      (geom.attributes.aAlpha as THREE.BufferAttribute).array = starAlphas.current as any;
+      (geom.attributes.aAlpha as THREE.BufferAttribute).needsUpdate = true;
+    }
   });
 
   return (
-    <points ref={points}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attach="attributes-aScale"
-          count={count}
-          array={scales}
-          itemSize={1}
-        />
-        <bufferAttribute
-          attach="attributes-aRandom"
-          count={count}
-          array={randoms}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <shaderMaterial
-        transparent
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        uniforms={uniforms.current}
-        vertexShader={`
-          uniform float uTime;
-          uniform vec3 uMouse;
-          attribute float aScale;
-          attribute vec3 aRandom;
-          varying float vAlpha;
-          varying float vMix;
-          varying float vTwinkle;
+    <>
+      {/* Background layer */}
+      <points ref={bgRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" count={bgCount} array={bgPositions} itemSize={3} />
+          <bufferAttribute attach="attributes-aScale" count={bgCount} array={bgScales} itemSize={1} />
+          <bufferAttribute attach="attributes-aRandom" count={bgCount} array={bgRandoms} itemSize={3} />
+        </bufferGeometry>
+        <shaderMaterial
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+          uniforms={uniforms.current}
+          vertexShader={`
+            uniform float uTime;
+            uniform vec3 uMouse;
+            attribute float aScale;
+            attribute vec3 aRandom;
+            varying float vAlpha;
+            varying float vMix;
 
-          void main() {
-            vec3 pos = position;
-
-            // Gentle global rotation for parallax feel
-            float rot = uTime * 0.02;
-            float c = cos(rot);
-            float s = sin(rot);
-            mat2 R = mat2(c, -s, s, c);
-            pos.xy = R * pos.xy;
-
-            // Natural drift
-            float time = uTime * 0.25;
-            pos.x += sin(time * aRandom.x + pos.y * 0.03) * 0.6;
-            pos.y += cos(time * aRandom.y + pos.x * 0.03) * 0.6;
-            pos.z += sin(time * aRandom.z * 0.5) * 0.4;
-
-            // Mouse Interaction
-            float dist = distance(pos.xy, uMouse.xy);
-            float radius = 6.0;
-            float force = 0.0;
-            if (dist < radius) {
-               force = (radius - dist) / radius;
-               vec3 dir = normalize(pos - uMouse);
-               pos += dir * force * 3.2;
-               pos.z += force * 2.2;
+            void main(){
+              vec3 pos = position;
+              float time = uTime * 0.2;
+              pos.x += sin(time * aRandom.x + pos.y * 0.02) * 0.8;
+              pos.y += cos(time * aRandom.y + pos.x * 0.02) * 0.8;
+              float dist = distance(pos.xy, uMouse.xy);
+              float radius = 8.0;
+              float force = 0.0;
+              if(dist < radius){
+                force = (radius - dist) / radius;
+                vec3 dir = normalize(pos - uMouse);
+                pos += dir * force * 2.2;
+              }
+              vec4 mvPos = modelViewMatrix * vec4(pos,1.0);
+              gl_Position = projectionMatrix * mvPos;
+              gl_PointSize = aScale * 18.0 * (1.0 / -mvPos.z);
+              vMix = aRandom.x;
+              vAlpha = 0.25 + force * 0.6;
             }
+          `}
+          fragmentShader={`
+            uniform vec3 uColor1;
+            uniform vec3 uColor2;
+            varying float vAlpha;
+            varying float vMix;
+            void main(){
+              float r = length(gl_PointCoord - vec2(0.5));
+              if(r > 0.5) discard;
+              float glow = pow(1.0 - r*2.0, 2.0);
+              vec3 color = mix(uColor1, uColor2, vMix*0.5);
+              gl_FragColor = vec4(color, glow * vAlpha);
+            }
+          `}
+        />
+      </points>
 
-            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-            gl_Position = projectionMatrix * mvPosition;
+      {/* Foreground layer */}
+      <points ref={fgRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" count={fgCount} array={fgPositions} itemSize={3} />
+          <bufferAttribute attach="attributes-aScale" count={fgCount} array={fgScales} itemSize={1} />
+          <bufferAttribute attach="attributes-aRandom" count={fgCount} array={fgRandoms} itemSize={3} />
+        </bufferGeometry>
+        <shaderMaterial
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+          uniforms={uniforms.current}
+          vertexShader={`
+            uniform float uTime;
+            uniform vec3 uMouse;
+            attribute float aScale;
+            attribute vec3 aRandom;
+            varying float vAlpha;
+            varying float vMix;
 
-            gl_PointSize = aScale * 28.0 * (1.0 / -mvPosition.z);
+            void main(){
+              vec3 pos = position;
+              float time = uTime * 0.4;
+              pos.x += sin(time * aRandom.x + pos.y * 0.03) * 0.6;
+              pos.y += cos(time * aRandom.y + pos.x * 0.03) * 0.6;
+              float dist = distance(pos.xy, uMouse.xy);
+              float radius = 6.0;
+              float force = 0.0;
+              if(dist < radius){
+                force = (radius - dist) / radius;
+                vec3 dir = normalize(pos - uMouse);
+                pos += dir * force * 3.0;
+                pos.z += force * 1.8;
+              }
+              vec4 mvPos = modelViewMatrix * vec4(pos,1.0);
+              gl_Position = projectionMatrix * mvPos;
+              gl_PointSize = aScale * 30.0 * (1.0 / -mvPos.z);
+              vMix = aRandom.x;
+              vAlpha = 0.45 + force * 0.5;
+            }
+          `}
+          fragmentShader={`
+            uniform vec3 uColor1;
+            uniform vec3 uColor2;
+            varying float vAlpha;
+            varying float vMix;
+            void main(){
+              float r = length(gl_PointCoord - vec2(0.5));
+              if(r > 0.6) discard;
+              float glow = pow(1.0 - r*1.8, 2.0);
+              vec3 color = mix(uColor1, uColor2, vMix);
+              gl_FragColor = vec4(color, glow * vAlpha);
+            }
+          `}
+        />
+      </points>
 
-            // Mix factor for color interpolation
-            vMix = aRandom.x;
-
-            // Subtle twinkle per particle
-            vTwinkle = 0.6 + 0.4 * sin(uTime * 3.0 + aRandom.y * 12.0);
-
-            vAlpha = (0.35 + force * 0.65) * vTwinkle;
-          }
-        `}
-        fragmentShader={`
-          uniform vec3 uColor1;
-          uniform vec3 uColor2;
-          varying float vAlpha;
-          varying float vMix;
-          varying float vTwinkle;
-
-          void main() {
-            float r = length(gl_PointCoord - vec2(0.5));
-            if (r > 0.5) discard;
-
-            float glow = 1.0 - (r * 2.0);
-            glow = pow(glow, 2.0);
-
-            vec3 color = mix(uColor1, uColor2, vMix);
-            gl_FragColor = vec4(color, glow * vAlpha);
-          }
-        `}
-      />
-    </points>
+      {/* Shooting stars */}
+      <points ref={starsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" count={starMax} array={starPositions.current} itemSize={3} />
+          <bufferAttribute attach="attributes-aAlpha" count={starMax} array={starAlphas.current} itemSize={1} />
+        </bufferGeometry>
+        <shaderMaterial
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+          uniforms={{ uTime: uniforms.current.uTime }}
+          vertexShader={`
+            attribute float aAlpha;
+            uniform float uTime;
+            varying float vAlpha;
+            void main(){
+              vec3 pos = position;
+              vec4 mvPos = modelViewMatrix * vec4(pos,1.0);
+              gl_Position = projectionMatrix * mvPos;
+              gl_PointSize = 80.0 * (1.0 / -mvPos.z);
+              vAlpha = aAlpha;
+            }
+          `}
+          fragmentShader={`
+            varying float vAlpha;
+            void main(){
+              float r = length(gl_PointCoord - vec2(0.5));
+              if(r > 0.9) discard;
+              float glow = pow(1.0 - r*1.6, 3.0);
+              vec3 color = vec3(1.0, 0.95, 0.85);
+              gl_FragColor = vec4(color, glow * vAlpha);
+            }
+          `}
+        />
+      </points>
+    </>
   );
 };
 
