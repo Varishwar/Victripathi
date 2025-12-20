@@ -1,4 +1,22 @@
+# Robots.txt for Varishwar Tripathi Portfolio
+# https://www.varishwartripathi.co.in
+
 User-agent: *
 Allow: /
+Crawl-delay: 0
 
+# Sitemaps
 Sitemap: https://www.varishwartripathi.co.in/sitemap.xml
+
+# Popular Search Engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
