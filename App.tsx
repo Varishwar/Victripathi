@@ -18,6 +18,8 @@ import Testimonials from './components/Testimonials';
 import SkillsRadar from './components/SkillsRadar';
 import Certifications from './components/Certifications';
 import Contact from './components/Contact';
+import CodeTerminal from './components/CodeTerminal';
+import SkillsProgress from './components/SkillsProgress';
 
 // Lazy load heavy 3D background
 const ParticleBackground = React.lazy(() => import('./components/ParticleBackground'));
@@ -76,6 +78,10 @@ const App: React.FC = () => {
             <TechStack />
             <SectionDivider gradient="from-purple-500 via-indigo-500 to-blue-500" />
             <Skills skills={RESUME_DATA.skills} />
+            <SectionDivider gradient="from-emerald-500 via-teal-500 to-cyan-500" />
+            <SkillsProgress />
+            <SectionDivider gradient="from-purple-500 via-pink-500 to-rose-500" />
+            <CodeTerminal />
             <SectionDivider gradient="from-purple-500 via-pink-500 to-rose-500" />
             {RESUME_DATA.keyProjects && <KeyProjects projects={RESUME_DATA.keyProjects} />}
             <SectionDivider gradient="from-cyan-500 via-blue-500 to-indigo-500" />
