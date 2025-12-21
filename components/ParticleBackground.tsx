@@ -4,11 +4,16 @@ import * as THREE from 'three';
 
 const ParticleBackground: React.FC = () => {
   return (
-    <div className="fixed inset-0 z-0 bg-slate-950">
-      <Canvas camera={{ position: [0, 0, 20], fov: 60 }} dpr={[1, 2]}>
+    <div className="fixed inset-0 z-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <Canvas camera={{ position: [0, 0, 20], fov: 75 }} dpr={[1, 2]}>
         <SimpleParticles />
+        <ambientLight intensity={0.1} />
       </Canvas>
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/80 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/30 via-transparent to-slate-950/60 pointer-events-none" />
+      {/* Animated gradient orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-azure-500/10 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+      <div className="absolute top-1/2 right-1/3 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
     </div>
   );
 };
@@ -20,11 +25,12 @@ const SimpleParticles = () => {
   const uniforms = useRef({
     uTime: { value: 0 },
     uMouse: { value: new THREE.Vector3(1000, 1000, 0) }, // Start off-screen
-    uColor1: { value: new THREE.Color('#38bdf8') }, // Azure
-    uColor2: { value: new THREE.Color('#7c3aed') }  // Purple accent
+    uColor1: { value: new THREE.Color('#38bdf8') }, // Azure blue
+    uColor2: { value: new THREE.Color('#14b8a6') }, // Teal
+    uColor3: { value: new THREE.Color('#a855f7') }  // Purple accent
   });
 
-  const count = 1200; // Reduced particle count for performance and clarity
+  const count = 2000; // Increased particle count for more impressive effect
   
   const { positions, scales, randoms } = useMemo(() => {
     const positions = new Float32Array(count * 3);
@@ -32,12 +38,12 @@ const SimpleParticles = () => {
     const randoms = new Float32Array(count * 3); // Random values for drift/mix
     
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 60;     // x spread
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 40; // y spread
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20; // z depth
+      positions[i * 3] = (Math.random() - 0.5) * 80;     // x spread - wider
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 60; // y spread - taller
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 30; // z depth - deeper
       
-      // Bias scales toward smaller sizes while keeping some larger
-      scales[i] = 0.4 + Math.pow(Math.random(), 2) * 1.2;
+      // Varied scales for depth perception
+      scales[i] = 0.3 + Math.pow(Math.random(), 2) * 1.5;
 
       // randoms: x = color mix, y = twinkle offset, z = drift seed
       randoms[i * 3] = Math.random();
@@ -56,7 +62,13 @@ const SimpleParticles = () => {
     const y = (pointer.y * viewport.height) / 2;
 
     // Smoothly interpolate mouse position for fluid effect
-    uniforms.current.uMouse.value.lerp(new THREE.Vector3(x, y, 0), 0.08);
+    uniforms.current.uMouse.value.lerp(new THREE.Vector3(x, y, 0), 0.05);
+    
+    // Gentle rotation for dynamic feel
+    if (points.current) {
+      points.current.rotation.y += 0.0002;
+      points.current.rotation.x = Math.sin(clock.getElapsedTime() * 0.1) * 0.05;
+    }
   });
 
   return (
@@ -105,40 +117,41 @@ const SimpleParticles = () => {
             mat2 R = mat2(c, -s, s, c);
             pos.xy = R * pos.xy;
 
-            // Natural drift
-            float time = uTime * 0.25;
-            pos.x += sin(time * aRandom.x + pos.y * 0.03) * 0.6;
-            pos.y += cos(time * aRandom.y + pos.x * 0.03) * 0.6;
-            pos.z += sin(time * aRandom.z * 0.5) * 0.4;
+            // Natural drift with more movement
+            float time = uTime * 0.3;
+            pos.x += sin(time * aRandom.x + pos.y * 0.04) * 0.8;
+            pos.y += cos(time * aRandom.y + pos.x * 0.04) * 0.8;
+            pos.z += sin(time * aRandom.z * 0.6) * 0.6;
 
-            // Mouse Interaction
+            // Mouse Interaction - stronger effect
             float dist = distance(pos.xy, uMouse.xy);
-            float radius = 6.0;
+            float radius = 8.0;
             float force = 0.0;
             if (dist < radius) {
                force = (radius - dist) / radius;
                vec3 dir = normalize(pos - uMouse);
-               pos += dir * force * 3.2;
-               pos.z += force * 2.2;
+               pos += dir * force * 4.5;
+               pos.z += force * 3.0;
             }
 
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            gl_PointSize = aScale * 28.0 * (1.0 / -mvPosition.z);
+            gl_PointSize = aScale * 32.0 * (1.0 / -mvPosition.z);
 
             // Mix factor for color interpolation
             vMix = aRandom.x;
 
-            // Subtle twinkle per particle
-            vTwinkle = 0.6 + 0.4 * sin(uTime * 3.0 + aRandom.y * 12.0);
+            // More pronounced twinkle
+            vTwinkle = 0.5 + 0.5 * sin(uTime * 2.5 + aRandom.y * 10.0);
 
-            vAlpha = (0.35 + force * 0.65) * vTwinkle;
+            vAlpha = (0.4 + force * 0.6) * vTwinkle;
           }
         `}
         fragmentShader={`
           uniform vec3 uColor1;
           uniform vec3 uColor2;
+          uniform vec3 uColor3;
           varying float vAlpha;
           varying float vMix;
           varying float vTwinkle;
@@ -148,9 +161,18 @@ const SimpleParticles = () => {
             if (r > 0.5) discard;
 
             float glow = 1.0 - (r * 2.0);
-            glow = pow(glow, 2.0);
+            glow = pow(glow, 2.5);
 
-            vec3 color = mix(uColor1, uColor2, vMix);
+            // Mix three colors for more variety
+            vec3 color;
+            if (vMix < 0.33) {
+              color = uColor1;
+            } else if (vMix < 0.66) {
+              color = uColor2;
+            } else {
+              color = uColor3;
+            }
+            
             gl_FragColor = vec4(color, glow * vAlpha);
           }
         `}
